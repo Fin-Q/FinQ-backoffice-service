@@ -1,6 +1,13 @@
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 export const MAX_RANGE_DAYS = 365;
 
+export class DateRangeError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "DateRangeError";
+  }
+}
+
 function parseIsoDate(value: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
   const [year, month, day] = value.split("-").map(Number);
@@ -19,7 +26,7 @@ export function formatIsoDate(date: Date) {
 
 export function addDays(value: string, days: number) {
   const date = parseIsoDate(value);
-  if (!date) throw new Error("올바르지 않은 날짜입니다.");
+  if (!date) throw new DateRangeError("올바르지 않은 날짜입니다.");
   date.setUTCDate(date.getUTCDate() + days);
   return formatIsoDate(date);
 }
@@ -42,12 +49,12 @@ export function parseDateRange(
   const fromDate = parseIsoDate(from);
   const toDate = parseIsoDate(to);
 
-  if (!fromDate || !toDate) throw new Error("날짜는 YYYY-MM-DD 형식이어야 합니다.");
-  if (fromDate > toDate) throw new Error("시작일은 종료일보다 늦을 수 없습니다.");
-  if (to > today) throw new Error("미래 날짜는 조회할 수 없습니다.");
+  if (!fromDate || !toDate) throw new DateRangeError("날짜는 YYYY-MM-DD 형식이어야 합니다.");
+  if (fromDate > toDate) throw new DateRangeError("시작일은 종료일보다 늦을 수 없습니다.");
+  if (to > today) throw new DateRangeError("미래 날짜는 조회할 수 없습니다.");
 
   const days = Math.floor((toDate.getTime() - fromDate.getTime()) / DAY_IN_MS) + 1;
-  if (days > MAX_RANGE_DAYS) throw new Error(`조회 기간은 최대 ${MAX_RANGE_DAYS}일입니다.`);
+  if (days > MAX_RANGE_DAYS) throw new DateRangeError(`조회 기간은 최대 ${MAX_RANGE_DAYS}일입니다.`);
 
   return { from, to, days };
 }

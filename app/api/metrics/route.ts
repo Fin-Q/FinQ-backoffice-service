@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
+import { DateRangeError } from "@/lib/dashboard/date-range";
 import { getDashboardMetrics } from "@/lib/dashboard/service";
 
 export const runtime = "nodejs";
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest) {
       headers: { "Cache-Control": "private, no-store" },
     });
   } catch (error) {
-    if (error instanceof Error && /날짜|조회 기간|시작일|미래/.test(error.message)) {
+    if (error instanceof DateRangeError) {
       return NextResponse.json({ message: error.message }, { status: 400 });
     }
     console.error("Failed to load dashboard metrics", error);
