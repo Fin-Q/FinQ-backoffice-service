@@ -1,10 +1,11 @@
+import Image from "next/image";
 import styles from "../dashboard.module.css";
 
 export function Sidebar() {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.brand}>
-        <div className={styles.brandMark}>FQ</div>
+        <Image className={styles.brandMark} src="/brand/app-icon.png" alt="FinQ" width={44} height={44} priority />
         <div><strong>FinQ</strong><span>Backoffice</span></div>
       </div>
       <nav aria-label="관리자 메뉴">
