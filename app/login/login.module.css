@@ -3,10 +3,7 @@
   display: grid;
   place-content: center;
   padding: 32px 20px;
-  background:
-    radial-gradient(circle at 12% 12%, rgba(169, 212, 251, .72), transparent 28%),
-    radial-gradient(circle at 88% 82%, rgba(30, 120, 232, .2), transparent 30%),
-    #edf6ff;
+  background: var(--canvas);
 }
 
 .shell {
@@ -15,10 +12,10 @@
   display: grid;
   grid-template-columns: 1.08fr .92fr;
   overflow: hidden;
-  border: 1px solid rgba(30, 120, 232, .14);
-  border-radius: 34px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
   background: #fff;
-  box-shadow: 0 34px 90px rgba(25, 92, 177, .18);
+  box-shadow: 0 18px 50px rgba(26, 38, 57, .09);
 }
 
 .visual {
@@ -29,41 +26,39 @@
   flex-direction: column;
   overflow: hidden;
   color: #fff;
-  background:
-    radial-gradient(circle at 80% 18%, rgba(255,255,255,.2), transparent 25%),
-    linear-gradient(145deg, #2585f2 0%, #146ee0 55%, #0757c5 100%);
+  background: #176fd1;
 }
-.visual::before, .visual::after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.17); border-radius: 50%; }
-.visual::before { width: 270px; height: 270px; right: -85px; top: -90px; }
-.visual::after { width: 410px; height: 410px; left: -210px; bottom: -210px; }
 .visualCopy { position: relative; z-index: 1; }
-.visualBadge { display: inline-flex; padding: 7px 11px; border: 1px solid rgba(255,255,255,.3); border-radius: 999px; background: rgba(255,255,255,.12); font-size: 10px; font-weight: 900; letter-spacing: .14em; }
+.visualLabel { display: inline-flex; align-items: center; gap: 7px; color: rgba(255,255,255,.82); font-size: 11px; font-weight: 700; }
+.visualLabel svg { width: var(--icon-md); height: var(--icon-md); }
 .visual h2 { margin: 25px 0 14px; font-size: 34px; line-height: 1.24; letter-spacing: -.045em; }
 .visual p { width: 88%; margin: 0; color: rgba(255,255,255,.76); font-size: 14px; line-height: 1.65; }
 .mascot { width: 92%; height: auto; margin: auto auto -5px; position: relative; z-index: 1; object-fit: contain; filter: drop-shadow(0 22px 25px rgba(5,49,111,.2)); }
 
 .panel { padding: 54px 48px; align-self: center; }
 .brand { display: flex; align-items: center; gap: 13px; }
-.brand img { border-radius: 15px; box-shadow: 0 9px 24px rgba(30,120,232,.24); }
+.brand img { border-radius: 12px; }
 .brand strong, .brand span { display: block; }
 .brand strong { font-size: 21px; letter-spacing: -.035em; }
 .brand span { margin-top: 3px; color: #8895a9; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
-.eyebrow { margin: 42px 0 8px; color: var(--brand); font-size: 10px; font-weight: 900; letter-spacing: .16em; }
+.eyebrow { margin: 42px 0 8px; color: var(--brand); font-size: 10px; font-weight: 800; letter-spacing: .08em; }
 .panel h1 { margin: 0; font-size: 31px; letter-spacing: -.045em; }
 .description { margin: 12px 0 28px; color: var(--muted); font-size: 13px; line-height: 1.65; }
-.error { padding: 12px 14px; border-radius: 12px; color: var(--danger); background: #fff0ee; font-size: 13px; }
+.error { padding: 11px 12px; border-left: 2px solid var(--danger); display: flex; align-items: center; gap: 7px; color: var(--danger); background: #fffafa; font-size: 12px; }
+.error svg { width: var(--icon-md); height: var(--icon-md); flex: 0 0 auto; }
 .form { display: grid; gap: 18px; }
 .form label { display: grid; gap: 8px; color: #344258; font-size: 12px; font-weight: 800; }
-.form input { width: 100%; padding: 14px 15px; border: 1px solid #d5e1ef; border-radius: 12px; color: var(--ink); background: #f9fbfe; font-size: 13px; }
+.form input { width: 100%; padding: 13px 14px; border: 1px solid #d5dbe4; border-radius: var(--radius-control); color: var(--ink); background: #fff; font-size: 13px; }
 .form input::placeholder { color: #aab4c3; }
 .form input:focus { border-color: var(--brand); background: #fff; }
-.form button { margin-top: 8px; padding: 15px 18px; display: flex; justify-content: center; gap: 12px; border: 0; border-radius: 13px; color: #fff; background: linear-gradient(135deg, var(--brand), var(--brand-strong)); font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 12px 24px rgba(30,120,232,.24); }
-.form button:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(30,120,232,.3); }
+.form button { margin-top: 8px; padding: 14px 18px; display: flex; justify-content: center; align-items: center; gap: 8px; border: 0; border-radius: var(--radius-control); color: #fff; background: #176fd1; font-size: 13px; font-weight: 800; cursor: pointer; }
+.form button svg { width: var(--icon-md); height: var(--icon-md); }
+.form button:hover { background: #125cac; }
 .footer { margin: 22px 0 0; color: #7d8da3; font-size: 11px; text-align: center; }
 
 @media (max-width: 760px) {
   .page { padding: 18px 14px; }
-  .shell { width: min(480px, calc(100vw - 28px)); min-height: 0; grid-template-columns: 1fr; border-radius: 26px; }
+  .shell { width: min(480px, calc(100vw - 28px)); min-height: 0; grid-template-columns: 1fr; border-radius: 14px; }
   .visual { min-height: 235px; padding: 28px 26px 0; }
   .visual h2 { margin-top: 15px; font-size: 24px; }
   .visual p { display: none; }

@@ -89,17 +89,18 @@
   background: #fff;
 }
 .filterTitle { margin: 0 0 7px; color: #7a8494; font-size: 10px; font-weight: 700; }
-.presets { display: flex; gap: 4px; }
-.presets a { padding: 6px 10px; border-radius: var(--radius-control); color: #677184; text-decoration: none; font-size: 11px; font-weight: 700; }
-.presets a:hover { color: #20293a; background: #f2f4f7; }
-.presets .activePreset { color: #145fbd; background: #eaf3ff; }
+.presets { display: flex; gap: 16px; }
+.presets a { padding: 5px 1px 6px; border-bottom: 2px solid transparent; color: #677184; text-decoration: none; font-size: 11px; font-weight: 700; }
+.presets a:hover { color: #20293a; border-bottom-color: #cfd5de; }
+.presets .activePreset { color: #145fbd; border-bottom-color: #176fd1; }
 .dateForm { display: flex; align-items: flex-end; gap: 9px; }
 .dateForm label { display: grid; gap: 4px; color: #7a8494; font-size: 9px; font-weight: 700; }
 .dateForm input { padding: 8px 9px; border: 1px solid #d8dde5; border-radius: var(--radius-control); color: var(--ink); background: #fff; font-size: 11px; }
 .dateSeparator { padding-bottom: 9px; color: #a0a7b3; }
 .dateForm button { padding: 9px 14px; border: 0; border-radius: var(--radius-control); color: #fff; background: #176fd1; font-size: 11px; font-weight: 800; cursor: pointer; }
 .dateForm button:hover { background: #125cac; }
-.rangeError { margin: 10px 0 0; padding: 10px 13px; border-radius: 8px; color: #8a370f; background: #fff3e8; font-size: 11px; }
+.rangeError { margin: 10px 0 0; padding: 10px 13px; border-left: 2px solid var(--warning); display: flex; align-items: center; gap: 7px; color: #765214; background: #fffdf7; font-size: 11px; }
+.rangeError svg { width: var(--icon-sm); height: var(--icon-sm); flex: 0 0 auto; }
 .retryButton { margin-top: 20px; padding: 10px 15px; border: 0; border-radius: 8px; color: #fff; background: var(--brand-strong); font-weight: 800; cursor: pointer; }
 
 .kpiStrip {

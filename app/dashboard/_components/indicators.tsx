@@ -1,5 +1,5 @@
 import styles from "../dashboard.module.css";
-import { CheckCircleIcon, MinusIcon, PendingIcon, TrendDownIcon, TrendUpIcon } from "./icons";
+import { CheckCircleIcon, MinusIcon, PendingIcon, TrendDownIcon, TrendUpIcon } from "../../_components/icons";
 
 export function TrendIndicator({ value, suffix = "%" }: { value: number | null; suffix?: string }) {
   if (value === null) {

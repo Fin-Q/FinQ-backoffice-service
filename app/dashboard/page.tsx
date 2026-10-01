@@ -3,7 +3,7 @@ import { addDays, DateRangeError, todayInTimeZone } from "@/lib/dashboard/date-r
 import { getDashboardMetrics } from "@/lib/dashboard/service";
 import { DailyTable } from "./_components/daily-table";
 import { AppHeader } from "./_components/app-header";
-import { CalendarRangeIcon, ClockIcon, SeriesLineIcon } from "./_components/icons";
+import { AlertCircleIcon, CalendarRangeIcon, ClockIcon, SeriesLineIcon } from "../_components/icons";
 import { TrendIndicator } from "./_components/indicators";
 import { SignupChart, StreakChart } from "./_components/trend-charts";
 import styles from "./dashboard.module.css";
@@ -86,7 +86,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
             <button type="submit">적용</button>
           </form>
         </section>
-        {rangeError ? <p className={styles.rangeError} role="alert">{rangeError} 기본 30일 데이터로 표시합니다.</p> : null}
+        {rangeError ? <p className={styles.rangeError} role="alert"><AlertCircleIcon />{rangeError} 기본 30일 데이터로 표시합니다.</p> : null}
 
         <section className={styles.kpiStrip} aria-label="핵심 운영 지표">
           <article className={styles.kpiItem}>

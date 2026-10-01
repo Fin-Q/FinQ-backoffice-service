@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "../dashboard.module.css";
-import { CheckCircleIcon, LogoutIcon } from "./icons";
+import { CheckCircleIcon, LogoutIcon } from "../../_components/icons";
 
 export function AppHeader() {
   return (

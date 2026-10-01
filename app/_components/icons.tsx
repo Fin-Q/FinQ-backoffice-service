@@ -10,7 +10,7 @@ function IconBase({ children, ...props }: IconProps) {
       viewBox="0 0 16 16"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -60,4 +60,12 @@ export function ArrowRightIcon(props: IconProps) {
 
 export function SeriesLineIcon(props: IconProps) {
   return <IconBase {...props}><path d="M2.5 9.5c2-3 3.25-3 5-1.5s3 .75 6-2" /></IconBase>;
+}
+
+export function ActivityIcon(props: IconProps) {
+  return <IconBase {...props}><path d="M2.25 8h2.1l1.4-3.25L8.5 11.5l1.55-3.5h3.7" /></IconBase>;
+}
+
+export function AlertCircleIcon(props: IconProps) {
+  return <IconBase {...props}><circle cx="8" cy="8" r="5.5" /><path d="M8 5v3.5M8 11h.01" /></IconBase>;
 }
