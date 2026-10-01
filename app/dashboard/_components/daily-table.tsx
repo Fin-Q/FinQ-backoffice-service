@@ -1,5 +1,6 @@
 import type { DailyMetric } from "@/lib/dashboard/types";
 import styles from "../dashboard.module.css";
+import { TrendIndicator, DataStatus } from "./indicators";
 
 const formatter = new Intl.NumberFormat("ko-KR");
 
@@ -16,12 +17,12 @@ export function DailyTable({ data }: { data: DailyMetric[] }) {
           {[...data].reverse().map((item) => (
             <tr key={item.date}>
               <th scope="row">{formatDate(item.date)}</th>
-              <td><strong>+{formatter.format(item.signups)}</strong>{item.signupGrowthRate !== null ? <small className={item.signupGrowthRate >= 0 ? styles.up : styles.down}>{item.signupGrowthRate >= 0 ? "↑" : "↓"} {Math.abs(item.signupGrowthRate).toFixed(1)}%</small> : null}</td>
+              <td><strong>+{formatter.format(item.signups)}</strong>{item.signupGrowthRate !== null ? <TrendIndicator value={item.signupGrowthRate} /> : null}</td>
               <td>{formatter.format(item.cumulativeUsers)}</td>
               <td>{item.hasStatistics ? formatter.format(item.learnedUsers) : "—"}</td>
               <td>{item.hasStatistics ? <>{formatter.format(item.streak3Users)} <small>{item.streak3Rate.toFixed(1)}%</small></> : "—"}</td>
               <td>{item.hasStatistics ? <>{formatter.format(item.streak7Users)} <small>{item.streak7Rate.toFixed(1)}%</small></> : "—"}</td>
-              <td><span className={item.hasStatistics ? styles.completeStatus : styles.pendingStatus}>{item.hasStatistics ? "집계 완료" : "집계 대기"}</span></td>
+              <td><DataStatus complete={item.hasStatistics} /></td>
             </tr>
           ))}
         </tbody>

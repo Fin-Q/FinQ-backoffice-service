@@ -11,6 +11,12 @@
   --sky: #a9d4fb;
   --accent: #80baff;
   --danger: #b42318;
+  --positive: #13795b;
+  --warning: #8a6116;
+  --radius-control: 6px;
+  --radius-panel: 12px;
+  --icon-sm: 14px;
+  --icon-md: 16px;
 }
 
 * { box-sizing: border-box; }

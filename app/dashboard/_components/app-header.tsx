@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "../dashboard.module.css";
+import { CheckCircleIcon, LogoutIcon } from "./icons";
 
 export function AppHeader() {
   return (
@@ -15,9 +16,9 @@ export function AppHeader() {
           <a href="/dashboard" aria-current="page">대시보드</a>
         </nav>
         <div className={styles.headerActions}>
-          <span className={styles.systemState}><i aria-hidden />정상 운영 중</span>
+          <span className={styles.systemState}><CheckCircleIcon />정상 운영 중</span>
           <form action="/api/auth/logout" method="post">
-            <button type="submit">로그아웃</button>
+            <button type="submit"><LogoutIcon />로그아웃</button>
           </form>
         </div>
       </div>

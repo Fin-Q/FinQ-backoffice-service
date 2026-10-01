@@ -3,6 +3,8 @@ import { addDays, DateRangeError, todayInTimeZone } from "@/lib/dashboard/date-r
 import { getDashboardMetrics } from "@/lib/dashboard/service";
 import { DailyTable } from "./_components/daily-table";
 import { AppHeader } from "./_components/app-header";
+import { CalendarRangeIcon, ClockIcon, SeriesLineIcon } from "./_components/icons";
+import { TrendIndicator } from "./_components/indicators";
 import { SignupChart, StreakChart } from "./_components/trend-charts";
 import styles from "./dashboard.module.css";
 
@@ -22,16 +24,6 @@ function formatTimestamp(value: string | null) {
     hour: "2-digit",
     minute: "2-digit",
   }).format(new Date(`${value}+09:00`));
-}
-
-function TrendBadge({ value, suffix = "%" }: { value: number | null; suffix?: string }) {
-  if (value === null) return <span className={styles.neutralBadge}>비교 전</span>;
-  const positive = value >= 0;
-  return (
-    <span className={positive ? styles.positiveBadge : styles.negativeBadge}>
-      {positive ? "↑" : "↓"} {Math.abs(value).toFixed(1)}{suffix}
-    </span>
-  );
 }
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
@@ -67,7 +59,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
             <p className={styles.headerDescription}>사용자 성장과 학습 지속 지표를 확인합니다.</p>
           </div>
           <div className={styles.headerMeta}>
-            <span className={styles.liveDot} />
+            <ClockIcon />
             최근 집계 {formatTimestamp(metrics.calculatedAt)}
           </div>
         </header>
@@ -105,7 +97,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           <article className={styles.kpiItem}>
             <p>기간 신규 가입</p>
             <strong>{numberFormatter.format(metrics.summary.signupsInRange)}</strong>
-            <span>일 평균 {metrics.summary.averageDailySignups.toFixed(1)}명 <TrendBadge value={latestSignupGrowth} /></span>
+            <span>일 평균 {metrics.summary.averageDailySignups.toFixed(1)}명 <TrendIndicator value={latestSignupGrowth} /></span>
           </article>
           <article className={styles.kpiItem}>
             <p>학습 사용자</p>
@@ -130,7 +122,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           <article className={styles.chartCard}>
             <div className={styles.cardHeading}>
               <div><p className={styles.cardEyebrow}>학습 지속</p><h2>연속 학습률</h2></div>
-              <div className={styles.legend}><span><i className={styles.legend3} />3일</span><span><i className={styles.legend7} />7일</span></div>
+              <div className={styles.legend}>
+                <span className={styles.legend3}><SeriesLineIcon />3일</span>
+                <span className={styles.legend7}><SeriesLineIcon />7일</span>
+              </div>
             </div>
             <StreakChart data={metrics.daily} />
             <div className={styles.streakSummary}>
@@ -143,7 +138,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         <section className={styles.tableCard}>
           <div className={styles.cardHeading}>
             <div><p className={styles.cardEyebrow}>일별 데이터</p><h2>상세 지표</h2></div>
-            <span className={styles.rowCount}>{metrics.range.days}일</span>
+            <span className={styles.rangeLabel}><CalendarRangeIcon />최근 {metrics.range.days}일</span>
           </div>
           <DailyTable data={metrics.daily} />
         </section>
