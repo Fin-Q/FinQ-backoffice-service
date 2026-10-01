@@ -1,9 +1,8 @@
-import Image from "next/image";
 import { requireAdmin } from "@/lib/auth";
 import { addDays, DateRangeError, todayInTimeZone } from "@/lib/dashboard/date-range";
 import { getDashboardMetrics } from "@/lib/dashboard/service";
 import { DailyTable } from "./_components/daily-table";
-import { Sidebar } from "./_components/sidebar";
+import { AppHeader } from "./_components/app-header";
 import { SignupChart, StreakChart } from "./_components/trend-charts";
 import styles from "./dashboard.module.css";
 
@@ -59,28 +58,19 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
   return (
     <div className={styles.shell}>
-      <Sidebar />
+      <AppHeader />
       <main className={styles.main}>
         <header className={styles.header}>
           <div>
-            <p className={styles.eyebrow}>OVERVIEW</p>
-            <h1>운영 대시보드</h1>
-            <p className={styles.headerDescription}>사용자 성장과 학습 습관 지표를 한눈에 확인하세요.</p>
+            <p className={styles.eyebrow}>운영 현황</p>
+            <h1>대시보드</h1>
+            <p className={styles.headerDescription}>사용자 성장과 학습 지속 지표를 확인합니다.</p>
           </div>
           <div className={styles.headerMeta}>
             <span className={styles.liveDot} />
             최근 집계 {formatTimestamp(metrics.calculatedAt)}
           </div>
         </header>
-
-        <section className={styles.welcomeBanner}>
-          <div>
-            <span>FINQ DAILY CHECK</span>
-            <h2>오늘도 FinQ의 성장을 함께 살펴봐요.</h2>
-            <p>신규 가입과 연속 학습 지표가 어제보다 어떻게 달라졌는지 확인해 보세요.</p>
-          </div>
-          <Image src="/characters/character-04.png" alt="업무 준비를 마친 FinQ 캐릭터" width={240} height={173} priority />
-        </section>
 
         <section className={styles.filterPanel} aria-labelledby="period-filter-title">
           <div>
@@ -106,30 +96,26 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         </section>
         {rangeError ? <p className={styles.rangeError} role="alert">{rangeError} 기본 30일 데이터로 표시합니다.</p> : null}
 
-        <section className={styles.kpiGrid} aria-label="핵심 운영 지표">
-          <article className={styles.kpiCard}>
-            <div className={styles.characterBadge}><Image src="/characters/character-01.png" alt="" width={86} height={48} /></div>
-            <p>총 사용자</p>
+        <section className={styles.kpiStrip} aria-label="핵심 운영 지표">
+          <article className={styles.kpiItem}>
+            <p>전체 사용자</p>
             <strong>{numberFormatter.format(metrics.summary.totalUsers)}</strong>
-            <span>{metrics.range.to} 기준 활성 계정</span>
+            <span>{metrics.range.to} 기준</span>
           </article>
-          <article className={styles.kpiCard}>
-            <div className={styles.characterBadge}><Image src="/characters/character-02.png" alt="" width={86} height={52} /></div>
+          <article className={styles.kpiItem}>
             <p>기간 신규 가입</p>
             <strong>{numberFormatter.format(metrics.summary.signupsInRange)}</strong>
             <span>일 평균 {metrics.summary.averageDailySignups.toFixed(1)}명 <TrendBadge value={latestSignupGrowth} /></span>
           </article>
-          <article className={styles.kpiCard}>
-            <div className={styles.characterBadge}><Image src="/characters/character-03.png" alt="" width={80} height={60} /></div>
-            <p>학습 경험 사용자</p>
+          <article className={styles.kpiItem}>
+            <p>학습 사용자</p>
             <strong>{numberFormatter.format(metrics.summary.latestLearnedUsers)}</strong>
-            <span>{metrics.latestStatisticsDate ?? "집계 전"} 마감 지표</span>
+            <span>{metrics.latestStatisticsDate ?? "집계 전"} 기준</span>
           </article>
-          <article className={`${styles.kpiCard} ${styles.featuredCard}`}>
-            <div className={`${styles.characterBadge} ${styles.featuredCharacter}`}><Image src="/characters/character-04.png" alt="" width={84} height={61} /></div>
+          <article className={styles.kpiItem}>
             <p>7일 연속 학습률</p>
             <strong>{metrics.summary.latestStreak7Rate.toFixed(1)}%</strong>
-            <span>{numberFormatter.format(metrics.summary.latestStreak7Users)}명이 7일 연속 달성</span>
+            <span>{numberFormatter.format(metrics.summary.latestStreak7Users)}명 달성</span>
           </article>
         </section>
 
