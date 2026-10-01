@@ -122,23 +122,28 @@
 .cardHeading { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
 .cardHeading h2 { margin: 0; font-size: 16px; letter-spacing: -.03em; }
 .cardHeading > p { margin: 4px 0 0; color: var(--muted); font-size: 10px; }
+.chartMetric { display: grid; justify-items: end; gap: 3px; }
+.chartMetric span { color: #818a98; font-size: 9px; font-weight: 650; }
+.chartMetric strong { color: #202735; font-size: 14px; letter-spacing: -.02em; }
 .legend { display: flex; gap: 10px; color: var(--muted); font-size: 10px; }
 .legend span { display: flex; align-items: center; gap: 5px; }
 .legend i { width: 8px; height: 8px; border-radius: 50%; }
-.legend3 { background: #1e78e8; }
-.legend7 { background: #92c8fb; }
-.chartWrap { width: 100%; margin-top: 14px; overflow: hidden; }
-.chartWrap svg { width: 100%; min-width: 430px; display: block; }
-.gridLine { stroke: #e8ebf0; stroke-width: 1; stroke-dasharray: 3 4; }
-.signupBar { fill: #2b83ed; opacity: .88; }
-.axisLabel { fill: #78889c; font-size: 10px; }
-.line3, .line7 { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.line3 { stroke: #1e78e8; }
-.line7 { stroke: #92c8fb; }
-.point3 { fill: #1e78e8; }
-.point7 { fill: #92c8fb; }
+.legend3 { background: #2076d4; }
+.legend7 { background: #7f91a9; }
+.chartWrap { width: 100%; margin-top: 15px; overflow: hidden; }
+.chartWrap svg { width: 100%; height: auto; display: block; }
+.gridLine { stroke: #e8ebf0; stroke-width: 1; }
+.axisLabel, .yAxisLabel { fill: #8c95a4; font-size: 9px; }
+.signupArea { fill: url("#signup-area"); }
+.signupLine, .line3, .line7 { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.signupLine { stroke: #2076d4; stroke-width: 2.25; }
+.line3 { stroke: #2076d4; stroke-width: 2.2; }
+.line7 { stroke: #7f91a9; stroke-width: 2; }
+.latestHalo { fill: #2076d4; opacity: .14; }
+.latestPoint, .point3 { fill: #fff; stroke: #2076d4; stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+.point7 { fill: #fff; stroke: #7f91a9; stroke-width: 2.5; vector-effect: non-scaling-stroke; }
 .emptyChart { min-height: 248px; display: grid; place-items: center; color: var(--muted); font-size: 12px; }
-.streakSummary { padding: 13px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-radius: 10px; background: #f5f7fa; }
+.streakSummary { padding: 13px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-top: 1px solid #e8ebf0; }
 .streakSummary div { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 3px 8px; }
 .streakSummary span { color: var(--muted); font-size: 10px; }
 .streakSummary strong { font-size: 17px; }
@@ -186,5 +191,6 @@
   .kpiItem:nth-child(odd)::before { display: none; }
   .chartCard, .tableCard { padding: 18px; }
   .tableWrap { margin-right: -18px; margin-left: -18px; }
-  .chartWrap { overflow-x: auto; }
+  .chartWrap { overflow: hidden; }
+  .chartWrap svg { min-width: 0; }
 }

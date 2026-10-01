@@ -122,14 +122,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         <section className={styles.insightGrid}>
           <article className={styles.chartCard}>
             <div className={styles.cardHeading}>
-              <div><p className={styles.cardEyebrow}>USER GROWTH</p><h2>일별 신규 가입</h2></div>
-              <p>{metrics.range.from} – {metrics.range.to}</p>
+              <div><p className={styles.cardEyebrow}>가입 흐름</p><h2>일별 신규 가입</h2></div>
+              <div className={styles.chartMetric}><span>기간 합계</span><strong>{numberFormatter.format(metrics.summary.signupsInRange)}명</strong></div>
             </div>
             <SignupChart data={metrics.daily} />
           </article>
           <article className={styles.chartCard}>
             <div className={styles.cardHeading}>
-              <div><p className={styles.cardEyebrow}>LEARNING HABIT</p><h2>연속 학습 전환율</h2></div>
+              <div><p className={styles.cardEyebrow}>학습 지속</p><h2>연속 학습률</h2></div>
               <div className={styles.legend}><span><i className={styles.legend3} />3일</span><span><i className={styles.legend7} />7일</span></div>
             </div>
             <StreakChart data={metrics.daily} />
@@ -142,7 +142,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
         <section className={styles.tableCard}>
           <div className={styles.cardHeading}>
-            <div><p className={styles.cardEyebrow}>DAILY DETAIL</p><h2>일별 지표 상세</h2></div>
+            <div><p className={styles.cardEyebrow}>일별 데이터</p><h2>상세 지표</h2></div>
             <span className={styles.rowCount}>{metrics.range.days}일</span>
           </div>
           <DailyTable data={metrics.daily} />
