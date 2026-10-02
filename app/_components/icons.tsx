@@ -69,3 +69,15 @@ export function ActivityIcon(props: IconProps) {
 export function AlertCircleIcon(props: IconProps) {
   return <IconBase {...props}><circle cx="8" cy="8" r="5.5" /><path d="M8 5v3.5M8 11h.01" /></IconBase>;
 }
+
+export function UserIcon(props: IconProps) {
+  return <IconBase {...props}><circle cx="8" cy="5.5" r="2.5" /><path d="M3.75 13c.4-2.3 1.82-3.5 4.25-3.5s3.85 1.2 4.25 3.5" /></IconBase>;
+}
+
+export function DashboardIcon(props: IconProps) {
+  return <IconBase {...props}><rect x="2.5" y="2.5" width="4.25" height="4.25" rx=".75" /><rect x="9.25" y="2.5" width="4.25" height="4.25" rx=".75" /><rect x="2.5" y="9.25" width="4.25" height="4.25" rx=".75" /><rect x="9.25" y="9.25" width="4.25" height="4.25" rx=".75" /></IconBase>;
+}
+
+export function UsersIcon(props: IconProps) {
+  return <IconBase {...props}><circle cx="6.25" cy="5.25" r="2.25" /><path d="M2.5 12.75c.35-2.15 1.6-3.25 3.75-3.25s3.4 1.1 3.75 3.25" /><path d="M10.25 3.4a2.15 2.15 0 0 1 0 3.7M11 9.4c1.5.25 2.3 1.35 2.5 3.1" /></IconBase>;
+}

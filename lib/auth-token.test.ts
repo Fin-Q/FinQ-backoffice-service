@@ -4,15 +4,17 @@ import { createSessionToken, safeEqual, verifySessionToken } from "./auth-token"
 const secret = "a-secure-session-secret-with-32-chars";
 
 describe("admin session token", () => {
-  it("accepts a valid token before expiration", () => {
-    const token = createSessionToken("admin", secret, 1_000);
-    expect(verifySessionToken(token, secret, 2_000)).toBe(true);
+  it("creates a standard JWT and accepts it before expiration", async () => {
+    const token = await createSessionToken("admin", secret, 1_000);
+    expect(token.split(".")).toHaveLength(3);
+    await expect(verifySessionToken(token, secret, 2_000)).resolves.toBe(true);
   });
 
-  it("rejects expired and tampered tokens", () => {
-    const token = createSessionToken("admin", secret, 1_000);
-    expect(verifySessionToken(token, secret, 12 * 60 * 60 * 1000 + 1_001)).toBe(false);
-    expect(verifySessionToken(`${token}x`, secret, 2_000)).toBe(false);
+  it("rejects expired, tampered, and incorrectly signed tokens", async () => {
+    const token = await createSessionToken("admin", secret, 1_000);
+    await expect(verifySessionToken(token, secret, 12 * 60 * 60 * 1000 + 1_001)).resolves.toBe(false);
+    await expect(verifySessionToken(`${token}x`, secret, 2_000)).resolves.toBe(false);
+    await expect(verifySessionToken(token, "another-secure-session-secret-32-chars", 2_000)).resolves.toBe(false);
   });
 
   it("compares credentials without leaking prefix matches", () => {

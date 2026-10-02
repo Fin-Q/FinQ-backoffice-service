@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   }
 
   const response = NextResponse.redirect(new URL("/dashboard", request.url), 303);
-  response.cookies.set(SESSION_COOKIE_NAME, createSessionToken(username, sessionSecret), {
+  response.cookies.set(SESSION_COOKIE_NAME, await createSessionToken(username, sessionSecret), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
