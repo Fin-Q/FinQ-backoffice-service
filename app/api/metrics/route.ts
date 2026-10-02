@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import { DateRangeError } from "@/lib/dashboard/date-range";
+import { FinqApiError } from "@/lib/dashboard/api-client";
 import { getDashboardMetrics } from "@/lib/dashboard/service";
 
 export const runtime = "nodejs";
@@ -22,6 +23,16 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     if (error instanceof DateRangeError) {
       return NextResponse.json({ message: error.message }, { status: 400 });
+    }
+    if (error instanceof FinqApiError) {
+      console.error("FinQ API request failed", {
+        message: error.message,
+        upstreamStatus: error.status,
+      });
+      return NextResponse.json(
+        { message: "FinQ 서버에서 통계 데이터를 불러오지 못했습니다." },
+        { status: 502 },
+      );
     }
     console.error("Failed to load dashboard metrics", error);
     return NextResponse.json({ message: "통계 데이터를 불러오지 못했습니다." }, { status: 500 });
