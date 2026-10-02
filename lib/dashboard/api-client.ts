@@ -4,6 +4,7 @@ import type { DashboardSource, DateRange, SignupRow, StatisticRow } from "./type
 
 const API_PREFIX = "/api/v1";
 const REQUEST_TIMEOUT_MS = 8_000;
+const MINIMUM_API_KEY_LENGTH = 32;
 
 export class FinqApiError extends Error {
   constructor(message: string, public readonly status?: number, options?: ErrorOptions) {
@@ -20,6 +21,10 @@ function getApiConfig() {
     throw new FinqApiError(
       "FINQ_API_BASE_URL 또는 BACKOFFICE_API_KEY 환경변수가 없습니다.",
     );
+  }
+
+  if (apiKey.length < MINIMUM_API_KEY_LENGTH) {
+    throw new FinqApiError("BACKOFFICE_API_KEY는 32자 이상이어야 합니다.");
   }
 
   return { baseUrl: baseUrl.replace(/\/+$/, ""), apiKey };
@@ -89,7 +94,10 @@ export async function fetchDashboardSource(range: DateRange): Promise<DashboardS
   }
 
   if (!response.ok) {
-    throw new FinqApiError("FinQ API가 통계 요청을 처리하지 못했습니다.", response.status);
+    const message = response.status === 401
+      ? "FinQ API 인증에 실패했습니다."
+      : "FinQ API가 통계 요청을 처리하지 못했습니다.";
+    throw new FinqApiError(message, response.status);
   }
 
   return parseDashboardSource(await response.json());

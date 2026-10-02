@@ -55,6 +55,28 @@ describe("fetchDashboardSource", () => {
 
     await expect(fetchDashboardSource(range)).rejects.toBeInstanceOf(FinqApiError);
   });
+
+  it("rejects a short API key before sending a request", async () => {
+    vi.stubEnv("FINQ_API_BASE_URL", "https://api.finq.example");
+    vi.stubEnv("BACKOFFICE_API_KEY", "short-key");
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(fetchDashboardSource(range)).rejects.toThrow(
+      "BACKOFFICE_API_KEY는 32자 이상이어야 합니다.",
+    );
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("preserves the upstream status when authentication fails", async () => {
+    configureApi();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(null, { status: 401 })));
+
+    await expect(fetchDashboardSource(range)).rejects.toMatchObject({
+      message: "FinQ API 인증에 실패했습니다.",
+      status: 401,
+    });
+  });
 });
 
 describe("checkFinqApiHealth", () => {
