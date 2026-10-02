@@ -3,6 +3,7 @@ import { addDays, DateRangeError, todayInTimeZone } from "@/lib/dashboard/date-r
 import { getDashboardMetrics } from "@/lib/dashboard/service";
 import { DailyTable } from "./_components/daily-table";
 import { AppHeader } from "./_components/app-header";
+import { DateRangeFilter } from "./_components/date-range-filter";
 import { AlertCircleIcon, CalendarRangeIcon, ClockIcon, SeriesLineIcon } from "../_components/icons";
 import { TrendIndicator } from "./_components/indicators";
 import { SignupChart, StreakChart } from "./_components/trend-charts";
@@ -64,28 +65,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           </div>
         </header>
 
-        <section className={styles.filterPanel} aria-labelledby="period-filter-title">
-          <div>
-            <p id="period-filter-title" className={styles.filterTitle}>조회 기간</p>
-            <div className={styles.presets} aria-label="빠른 기간 선택">
-              {presets.map((preset) => (
-                <a
-                  key={preset.days}
-                  href={`?from=${preset.from}&to=${preset.to}`}
-                  className={metrics.range.days === preset.days && metrics.range.to === today ? styles.activePreset : undefined}
-                >
-                  {preset.days}일
-                </a>
-              ))}
-            </div>
-          </div>
-          <form className={styles.dateForm}>
-            <label>시작일<input type="date" name="from" defaultValue={metrics.range.from} max={today} /></label>
-            <span className={styles.dateSeparator}>—</span>
-            <label>종료일<input type="date" name="to" defaultValue={metrics.range.to} max={today} /></label>
-            <button type="submit">적용</button>
-          </form>
-        </section>
+        <DateRangeFilter
+          presets={presets}
+          activeDays={metrics.range.days}
+          activeTo={metrics.range.to}
+          from={metrics.range.from}
+          to={metrics.range.to}
+          today={today}
+        />
         {rangeError ? <p className={styles.rangeError} role="alert"><AlertCircleIcon />{rangeError} 기본 30일 데이터로 표시합니다.</p> : null}
 
         <section className={styles.kpiStrip} aria-label="핵심 운영 지표">
