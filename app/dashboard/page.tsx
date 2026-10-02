@@ -1,9 +1,10 @@
-import { requireAdmin } from "@/lib/auth";
+import Link from "next/link";
 import { addDays, DateRangeError, todayInTimeZone } from "@/lib/dashboard/date-range";
 import { getDashboardMetrics } from "@/lib/dashboard/service";
+import { getBackofficeUsers } from "@/lib/users/service";
 import { DailyTable } from "./_components/daily-table";
-import { AppHeader } from "./_components/app-header";
 import { DateRangeFilter } from "./_components/date-range-filter";
+import { UserTable } from "./_components/user-table";
 import { AlertCircleIcon, CalendarRangeIcon, ClockIcon, SeriesLineIcon } from "../_components/icons";
 import { TrendIndicator } from "./_components/indicators";
 import { SignupChart, StreakChart } from "./_components/trend-charts";
@@ -28,8 +29,8 @@ function formatTimestamp(value: string | null) {
 }
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
-  await requireAdmin();
   const params = await searchParams;
+  const recentUsersPromise = getBackofficeUsers({ page: 0, size: 8, query: "" });
   let rangeError: string | null = null;
   let metrics;
 
@@ -41,6 +42,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     metrics = await getDashboardMetrics({});
   }
 
+  const recentUsers = await recentUsersPromise;
   const latestSignupGrowth = metrics.daily.at(-1)?.signupGrowthRate ?? null;
   const today = todayInTimeZone();
   const presets = [7, 30, 90].map((days) => ({
@@ -50,8 +52,6 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   }));
 
   return (
-    <div className={styles.shell}>
-      <AppHeader />
       <main className={styles.main}>
         <header className={styles.header}>
           <div>
@@ -104,7 +104,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               <div><p className={styles.cardEyebrow}>가입 흐름</p><h2>일별 신규 가입</h2></div>
               <div className={styles.chartMetric}><span>기간 합계</span><strong>{numberFormatter.format(metrics.summary.signupsInRange)}명</strong></div>
             </div>
-            <SignupChart data={metrics.daily} />
+            <SignupChart key={`${metrics.range.from}-${metrics.range.to}`} data={metrics.daily} />
           </article>
           <article className={styles.chartCard}>
             <div className={styles.cardHeading}>
@@ -114,7 +114,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                 <span className={styles.legend7}><SeriesLineIcon />7일</span>
               </div>
             </div>
-            <StreakChart data={metrics.daily} />
+            <StreakChart key={`${metrics.range.from}-${metrics.range.to}`} data={metrics.daily} />
             <div className={styles.streakSummary}>
               <div><span>3일 연속</span><strong>{metrics.summary.latestStreak3Rate.toFixed(1)}%</strong><small>{numberFormatter.format(metrics.summary.latestStreak3Users)}명</small></div>
               <div><span>7일 연속</span><strong>{metrics.summary.latestStreak7Rate.toFixed(1)}%</strong><small>{numberFormatter.format(metrics.summary.latestStreak7Users)}명</small></div>
@@ -129,7 +129,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           </div>
           <DailyTable data={metrics.daily} />
         </section>
+
+        <section className={styles.tableCard}>
+          <div className={styles.cardHeading}>
+            <div><p className={styles.cardEyebrow}>신규 사용자</p><h2>최근 가입 사용자</h2></div>
+            <Link className={styles.textLink} href="/dashboard/users">전체 사용자 보기</Link>
+          </div>
+          <UserTable users={recentUsers.users} />
+        </section>
       </main>
-    </div>
   );
 }

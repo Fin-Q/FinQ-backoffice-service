@@ -32,7 +32,7 @@
 .brandName { font-size: 16px; font-weight: 800; letter-spacing: -.04em; }
 .brandDivider { width: 1px; height: 14px; margin: 0 2px; background: #d9dee6; }
 .productName { color: #677184; font-size: 12px; font-weight: 600; }
-.primaryNav { height: 100%; margin-left: 40px; display: flex; align-items: stretch; }
+.primaryNav { height: 100%; margin-left: 40px; display: flex; align-items: stretch; gap: 22px; }
 .primaryNav a {
   padding: 0 5px;
   position: relative;
@@ -50,8 +50,10 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: var(--brand);
+  background: transparent;
 }
+.primaryNav a[aria-current="page"] { color: #145fbd; }
+.primaryNav a[aria-current="page"]::after { background: var(--brand); }
 .headerActions { margin-left: auto; display: flex; align-items: center; gap: 18px; }
 .systemState { display: flex; align-items: center; gap: 7px; color: #596273; font-size: 11px; font-weight: 600; }
 .systemState svg { width: var(--icon-sm); height: var(--icon-sm); color: var(--positive); }
@@ -165,14 +167,17 @@
 .chartWrap svg { width: 100%; height: auto; display: block; }
 .gridLine { stroke: #e8ebf0; stroke-width: 1; }
 .axisLabel, .yAxisLabel { fill: #8c95a4; font-size: 9px; }
-.signupArea { fill: url("#signup-area"); }
+.signupArea { fill: url("#signup-area"); clip-path: inset(0 100% 0 0); animation: chart-area-reveal .58s cubic-bezier(.22, 1, .36, 1) forwards; }
 .signupLine, .line3, .line7 { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.signupLine, .line3, .line7 { stroke-dasharray: 1; stroke-dashoffset: 1; animation: chart-line-draw .62s cubic-bezier(.22, 1, .36, 1) forwards; }
 .signupLine { stroke: #2076d4; stroke-width: 2.25; }
-.line3 { stroke: #2076d4; stroke-width: 2.2; }
-.line7 { stroke: #7f91a9; stroke-width: 2; }
-.latestHalo { fill: #2076d4; opacity: .14; }
+.line3 { stroke: #2076d4; stroke-width: 2.2; animation-delay: 50ms; }
+.line7 { stroke: #7f91a9; stroke-width: 2; animation-delay: 120ms; }
+.latestHalo { fill: #2076d4; opacity: 0; transform-box: fill-box; transform-origin: center; animation: chart-halo-in .3s ease-out .5s forwards; }
 .latestPoint, .point3 { fill: #fff; stroke: #2076d4; stroke-width: 2.5; vector-effect: non-scaling-stroke; }
 .point7 { fill: #fff; stroke: #7f91a9; stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+.latestPoint, .point3, .point7 { opacity: 0; transform-box: fill-box; transform-origin: center; animation: chart-point-in .25s cubic-bezier(.2, .9, .35, 1.35) .54s forwards; }
+.point7 { animation-delay: .63s; }
 .emptyChart { min-height: 248px; display: grid; place-items: center; color: var(--muted); font-size: 12px; }
 .streakSummary { padding: 13px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-top: 1px solid #e8ebf0; }
 .streakSummary div { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 3px 8px; }
@@ -197,6 +202,30 @@
 .dataStatus svg { width: 13px; height: 13px; }
 .completeStatus { color: var(--positive); }
 .pendingStatus { color: var(--warning); }
+.textLink { color: #176fd1; font-size: 11px; font-weight: 750; text-decoration: none; }
+.textLink:hover { text-decoration: underline; }
+.userTableWrap { margin: 18px -22px 0; overflow-x: auto; }
+.userTableWrap table { width: 100%; min-width: 1050px; border-collapse: collapse; }
+.userTableWrap th, .userTableWrap td { padding: 13px 16px; border-top: 1px solid #e8ebf0; text-align: left; white-space: nowrap; font-size: 11px; }
+.userTableWrap thead th { color: #707989; background: #f8f9fb; font-size: 9px; letter-spacing: .04em; }
+.userTableWrap tbody th { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+.userTableWrap tbody th small { margin-top: 2px; display: block; color: #8a93a1; font-size: 9px; font-weight: 500; }
+.userTableWrap tbody tr:hover { background: #f7f9fc; }
+.userAvatar { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: #145fbd; background: #eaf4ff; font-size: 11px; font-weight: 800; }
+.userStatusComplete, .userStatusPending { padding: 4px 7px; border-radius: 5px; font-size: 9px; font-weight: 750; }
+.userStatusComplete { color: #176447; background: #edf8f3; }
+.userStatusPending { color: #765214; background: #fff8e8; }
+.emptyUsers { min-height: 180px; display: grid; place-items: center; color: var(--muted); font-size: 12px; }
+.usersCard { margin-top: 26px; padding: 22px; border: 1px solid #e1e5eb; border-radius: var(--radius-panel); background: #fff; }
+.userCount { color: #202735; font-size: 15px; }
+.userSearch { display: flex; align-items: end; gap: 8px; }
+.userSearch label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.userSearch input { width: min(360px, 100%); padding: 10px 12px; border: 1px solid #d8dde5; border-radius: var(--radius-control); background: #fff; font-size: 12px; }
+.userSearch button { padding: 10px 16px; border: 0; border-radius: var(--radius-control); color: #fff; background: #176fd1; font-size: 11px; font-weight: 800; cursor: pointer; }
+.userSearch button:disabled { cursor: wait; opacity: .65; }
+.pagination { margin-top: 18px; display: flex; justify-content: center; align-items: center; gap: 18px; color: #657082; font-size: 11px; }
+.pagination a { color: #176fd1; font-weight: 750; text-decoration: none; }
+.pagination span { color: #a8afb9; }
 
 .loadingAppHeader { max-width: 1480px; height: 64px; margin: 0 auto; padding: 0 32px; border-bottom: 1px solid #e6e9ee; display: flex; align-items: center; gap: 28px; }
 .skeletonBlock { border-radius: 6px; display: block; background: linear-gradient(100deg, #edf0f4 20%, #f7f8fa 38%, #edf0f4 56%); background-size: 260% 100%; animation: skeleton-shimmer 1.25s ease-in-out infinite; }
@@ -227,6 +256,10 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes loading-progress { from { left: -34%; } to { left: 100%; } }
 @keyframes skeleton-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@keyframes chart-line-draw { to { stroke-dashoffset: 0; } }
+@keyframes chart-area-reveal { to { clip-path: inset(0 0 0 0); } }
+@keyframes chart-point-in { from { opacity: 0; transform: scale(.55); } to { opacity: 1; transform: scale(1); } }
+@keyframes chart-halo-in { from { opacity: 0; transform: scale(.45); } to { opacity: .14; transform: scale(1); } }
 
 @media (max-width: 980px) {
   .kpiStrip { grid-template-columns: repeat(2, 1fr); }
@@ -269,5 +302,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spinner, .buttonSpinner, .loadingSpinner, .filterProgress::after, .skeletonBlock { animation: none; }
+  .spinner, .buttonSpinner, .loadingSpinner, .filterProgress::after, .skeletonBlock,
+  .signupArea, .signupLine, .line3, .line7, .latestHalo, .latestPoint, .point3, .point7 { animation: none; }
+  .signupArea { clip-path: none; }
+  .signupLine, .line3, .line7 { stroke-dashoffset: 0; }
+  .latestHalo { opacity: .14; }
+  .latestPoint, .point3, .point7 { opacity: 1; transform: none; }
 }

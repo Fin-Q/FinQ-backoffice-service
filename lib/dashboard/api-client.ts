@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { DashboardSource, DateRange, SignupRow, StatisticRow } from "./types";
+import type { BackofficeUser, BackofficeUserPage } from "@/lib/users/types";
 
 const API_PREFIX = "/api/v1";
 const REQUEST_TIMEOUT_MS = 8_000;
@@ -53,6 +54,18 @@ function isSignupRow(value: unknown): value is SignupRow {
     && typeof value.count === "number";
 }
 
+function isBackofficeUser(value: unknown): value is BackofficeUser {
+  return isRecord(value)
+    && typeof value.id === "number"
+    && typeof value.nickname === "string"
+    && typeof value.email === "string"
+    && typeof value.onboardingStatus === "string"
+    && typeof value.totalXp === "number"
+    && typeof value.currentStreak === "number"
+    && typeof value.createdAt === "string"
+    && (value.lastLoginAt === null || typeof value.lastLoginAt === "string");
+}
+
 function parseDashboardSource(payload: unknown): DashboardSource {
   if (!isRecord(payload) || !isRecord(payload.data)) {
     throw new FinqApiError("FinQ API 응답 형식이 올바르지 않습니다.");
@@ -101,6 +114,52 @@ export async function fetchDashboardSource(range: DateRange): Promise<DashboardS
   }
 
   return parseDashboardSource(await response.json());
+}
+
+export async function fetchBackofficeUsers(params: {
+  page: number;
+  size: number;
+  query: string;
+}): Promise<BackofficeUserPage> {
+  const { baseUrl, apiKey } = getApiConfig();
+  const url = buildApiUrl(baseUrl, "/internal/backoffice/users");
+  url.searchParams.set("page", String(params.page));
+  url.searchParams.set("size", String(params.size));
+  if (params.query) url.searchParams.set("query", params.query);
+
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      headers: { "X-Backoffice-Api-Key": apiKey },
+      cache: "no-store",
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+  } catch (error) {
+    throw new FinqApiError("FinQ API에 연결할 수 없습니다.", undefined, { cause: error });
+  }
+
+  if (!response.ok) {
+    throw new FinqApiError(
+      response.status === 401 ? "FinQ API 인증에 실패했습니다." : "사용자 목록을 불러오지 못했습니다.",
+      response.status,
+    );
+  }
+
+  const payload: unknown = await response.json();
+  if (!isRecord(payload) || !isRecord(payload.data)) {
+    throw new FinqApiError("FinQ API 사용자 응답 형식이 올바르지 않습니다.");
+  }
+  const data = payload.data;
+  if (!Array.isArray(data.users)
+    || !data.users.every(isBackofficeUser)
+    || typeof data.totalElements !== "number"
+    || typeof data.page !== "number"
+    || typeof data.size !== "number"
+    || typeof data.totalPages !== "number") {
+    throw new FinqApiError("FinQ API 사용자 데이터 형식이 올바르지 않습니다.");
+  }
+
+  return data as BackofficeUserPage;
 }
 
 export async function checkFinqApiHealth(): Promise<void> {

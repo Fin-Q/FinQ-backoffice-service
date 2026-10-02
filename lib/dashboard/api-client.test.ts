@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { checkFinqApiHealth, fetchDashboardSource, FinqApiError } from "./api-client";
+import { checkFinqApiHealth, fetchBackofficeUsers, fetchDashboardSource, FinqApiError } from "./api-client";
 
 vi.mock("server-only", () => ({}));
 
@@ -89,6 +89,39 @@ describe("checkFinqApiHealth", () => {
 
     expect((fetchMock.mock.calls[0]?.[0] as URL).toString()).toBe(
       "https://api.finq.example/api/v1/actuator/health",
+    );
+  });
+});
+
+describe("fetchBackofficeUsers", () => {
+  it("calls the paged internal user API", async () => {
+    configureApi();
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      status: "SUCCESS",
+      data: {
+        users: [{
+          id: 12,
+          nickname: "민지",
+          email: "minji@example.com",
+          onboardingStatus: "COMPLETED",
+          totalXp: 120,
+          currentStreak: 4,
+          createdAt: "2026-10-01T10:00:00",
+          lastLoginAt: null,
+        }],
+        totalElements: 1,
+        page: 0,
+        size: 20,
+        totalPages: 1,
+      },
+    }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const users = await fetchBackofficeUsers({ page: 0, size: 20, query: "민지" });
+
+    expect(users.users[0]?.nickname).toBe("민지");
+    expect((fetchMock.mock.calls[0]?.[0] as URL).toString()).toBe(
+      "https://api.finq.example/api/v1/internal/backoffice/users?page=0&size=20&query=%EB%AF%BC%EC%A7%80",
     );
   });
 });

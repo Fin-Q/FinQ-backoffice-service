@@ -11,6 +11,7 @@ const PAD_BOTTOM = 34;
 type Point = { x: number; y: number };
 
 function labelIndexes(length: number) {
+  if (length === 0) return [];
   if (length <= 1) return [0];
   return [...new Set([0, Math.floor((length - 1) / 2), length - 1])];
 }
@@ -86,7 +87,7 @@ export function SignupChart({ data }: { data: DailyMetric[] }) {
         </defs>
         <ChartGrid max={max} />
         <path d={areaPath} className={styles.signupArea} />
-        <path d={linePath} className={styles.signupLine} />
+        <path d={linePath} pathLength={1} className={styles.signupLine} />
         {latest ? (
           <>
             <circle cx={latest.x} cy={latest.y} r="7" className={styles.latestHalo} />
@@ -125,8 +126,8 @@ export function StreakChart({ data }: { data: DailyMetric[] }) {
     <div className={styles.chartWrap}>
       <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label="3일 및 7일 연속 학습률 선 차트">
         <ChartGrid max={max} />
-        <path d={smoothPath(points3)} className={styles.line3} />
-        <path d={smoothPath(points7)} className={styles.line7} />
+        <path d={smoothPath(points3)} pathLength={1} className={styles.line3} />
+        <path d={smoothPath(points7)} pathLength={1} className={styles.line7} />
         {latest3 ? <circle cx={latest3.x} cy={latest3.y} r="3.5" className={styles.point3}><title>{`${available.at(-1)?.date}: 3일 ${available.at(-1)?.streak3Rate}%`}</title></circle> : null}
         {latest7 ? <circle cx={latest7.x} cy={latest7.y} r="3.5" className={styles.point7}><title>{`${available.at(-1)?.date}: 7일 ${available.at(-1)?.streak7Rate}%`}</title></circle> : null}
         {labelIndexes(available.length).map((index) => (
