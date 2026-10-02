@@ -1,35 +1,40 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { timingSafeEqual } from "node:crypto";
+import { jwtVerify, SignJWT } from "jose";
 
-const SESSION_LIFETIME_MS = 12 * 60 * 60 * 1000;
+const SESSION_LIFETIME_SECONDS = 12 * 60 * 60;
+const JWT_ALGORITHM = "HS256";
+const JWT_ISSUER = "finq-backoffice";
+const JWT_AUDIENCE = "finq-backoffice-admin";
 
-function sign(value: string, secret: string) {
-  return createHmac("sha256", secret).update(value).digest("base64url");
+function getSigningKey(secret: string) {
+  return new TextEncoder().encode(secret);
 }
 
-export function createSessionToken(username: string, secret: string, now = Date.now()) {
-  const payload = Buffer.from(
-    JSON.stringify({ username, expiresAt: now + SESSION_LIFETIME_MS }),
-  ).toString("base64url");
-  return `${payload}.${sign(payload, secret)}`;
+export async function createSessionToken(username: string, secret: string, now = Date.now()) {
+  if (secret.length < 32) throw new Error("SESSION_SECRET must be at least 32 characters");
+
+  const issuedAt = Math.floor(now / 1000);
+  return new SignJWT({})
+    .setProtectedHeader({ alg: JWT_ALGORITHM, typ: "JWT" })
+    .setSubject(username)
+    .setIssuer(JWT_ISSUER)
+    .setAudience(JWT_AUDIENCE)
+    .setIssuedAt(issuedAt)
+    .setExpirationTime(issuedAt + SESSION_LIFETIME_SECONDS)
+    .sign(getSigningKey(secret));
 }
 
-export function verifySessionToken(token: string | undefined, secret: string, now = Date.now()) {
+export async function verifySessionToken(token: string | undefined, secret: string, now = Date.now()) {
   if (!token || secret.length < 32) return false;
 
-  const [payload, providedSignature] = token.split(".");
-  if (!payload || !providedSignature) return false;
-
-  const expectedSignature = sign(payload, secret);
-  const expected = Buffer.from(expectedSignature);
-  const provided = Buffer.from(providedSignature);
-  if (expected.length !== provided.length || !timingSafeEqual(expected, provided)) return false;
-
   try {
-    const parsed = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as {
-      username?: string;
-      expiresAt?: number;
-    };
-    return Boolean(parsed.username && parsed.expiresAt && parsed.expiresAt > now);
+    const { payload } = await jwtVerify(token, getSigningKey(secret), {
+      algorithms: [JWT_ALGORITHM],
+      issuer: JWT_ISSUER,
+      audience: JWT_AUDIENCE,
+      currentDate: new Date(now),
+    });
+    return Boolean(payload.sub);
   } catch {
     return false;
   }
