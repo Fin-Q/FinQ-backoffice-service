@@ -1,7 +1,7 @@
 export type BackofficeUser = {
   id: number;
   nickname: string;
-  email: string;
+  email: string | null;
   onboardingStatus: string;
   totalXp: number;
   currentStreak: number;

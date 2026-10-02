@@ -102,7 +102,7 @@ describe("fetchBackofficeUsers", () => {
         users: [{
           id: 12,
           nickname: "민지",
-          email: "minji@example.com",
+          email: null,
           onboardingStatus: "COMPLETED",
           totalXp: 120,
           currentStreak: 4,
@@ -120,6 +120,7 @@ describe("fetchBackofficeUsers", () => {
     const users = await fetchBackofficeUsers({ page: 0, size: 20, query: "민지" });
 
     expect(users.users[0]?.nickname).toBe("민지");
+    expect(users.users[0]?.email).toBeNull();
     expect((fetchMock.mock.calls[0]?.[0] as URL).toString()).toBe(
       "https://api.finq.example/api/v1/internal/backoffice/users?page=0&size=20&query=%EB%AF%BC%EC%A7%80",
     );

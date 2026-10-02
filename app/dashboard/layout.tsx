@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/lib/auth";
-import { AppHeader } from "./_components/app-header";
+import { AppSidebar } from "./_components/app-sidebar";
 import styles from "./dashboard.module.css";
 
 export default async function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -7,8 +7,8 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
 
   return (
     <div className={styles.shell}>
-      <AppHeader />
-      {children}
+      <AppSidebar />
+      <div className={styles.content}>{children}</div>
     </div>
   );
 }

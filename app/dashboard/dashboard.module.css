@@ -1,77 +1,70 @@
-.shell { min-height: 100vh; }
-
-.appHeader {
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 224px minmax(0, 1fr);
+}
+.content { min-width: 0; }
+.sidebar {
   position: sticky;
   top: 0;
-  z-index: 20;
-  border-bottom: 1px solid #e6e9ee;
-  background: rgba(255, 255, 255, .94);
-  backdrop-filter: blur(14px);
-}
-.appHeaderInner {
-  max-width: 1480px;
-  height: 64px;
-  margin: 0 auto;
-  padding: 0 32px;
+  height: 100vh;
+  padding: 20px 14px 14px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  border-right: 1px solid #e3e7ec;
+  background: #fff;
 }
 .brand {
+  min-height: 44px;
+  padding: 4px 8px;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   color: #121826;
   text-decoration: none;
 }
 .brandMark {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
   object-fit: cover;
 }
-.brandName { font-size: 16px; font-weight: 800; letter-spacing: -.04em; }
-.brandDivider { width: 1px; height: 14px; margin: 0 2px; background: #d9dee6; }
-.productName { color: #677184; font-size: 12px; font-weight: 600; }
-.primaryNav { height: 100%; margin-left: 40px; display: flex; align-items: stretch; gap: 22px; }
-.primaryNav a {
-  padding: 0 5px;
-  position: relative;
+.brandName { font-size: 17px; font-weight: 800; letter-spacing: -.04em; }
+.sidebarNav { margin-top: 28px; display: grid; gap: 4px; }
+.sidebarNav a {
+  min-height: 42px;
+  padding: 0 12px;
   display: flex;
   align-items: center;
-  color: #20293a;
+  gap: 11px;
+  border-radius: 8px;
+  color: #566171;
   text-decoration: none;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 650;
 }
-.primaryNav a::after {
-  content: "";
-  height: 2px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: transparent;
-}
-.primaryNav a[aria-current="page"] { color: #145fbd; }
-.primaryNav a[aria-current="page"]::after { background: var(--brand); }
-.headerActions { margin-left: auto; display: flex; align-items: center; gap: 18px; }
-.systemState { display: flex; align-items: center; gap: 7px; color: #596273; font-size: 11px; font-weight: 600; }
-.systemState svg { width: var(--icon-sm); height: var(--icon-sm); color: var(--positive); }
-.headerActions button {
-  padding: 7px 10px;
+.sidebarNav a:hover { color: #202938; background: #f5f7fa; }
+.sidebarNav a[aria-current="page"] { color: #135fac; background: #edf5fd; }
+.sidebarNav svg { width: 17px; height: 17px; flex: 0 0 auto; }
+.sidebarFooter { margin-top: auto; padding-top: 12px; border-top: 1px solid #e8ebef; }
+.sidebarFooter button {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 12px;
   border: 0;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: #747d8d;
+  gap: 10px;
+  color: #697383;
   background: transparent;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 650;
   cursor: pointer;
 }
-.headerActions button:hover { color: #151b26; }
+.sidebarFooter button:hover { color: #202938; }
+.sidebarFooter svg { width: 16px; height: 16px; }
 
-.main { max-width: 1480px; margin: 0 auto; padding: 40px 32px 64px; }
+.main { max-width: 1320px; margin: 0 auto; padding: 40px 32px 64px; }
 .header { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
 .eyebrow, .cardEyebrow { margin: 0 0 7px; color: #758093; font-size: 10px; font-weight: 800; letter-spacing: .08em; }
 .header h1 { margin: 0; font-size: clamp(28px, 3vw, 36px); line-height: 1.1; letter-spacing: -.05em; }
@@ -206,15 +199,18 @@
 .textLink:hover { text-decoration: underline; }
 .userTableWrap { margin: 18px -22px 0; overflow-x: auto; }
 .userTableWrap table { width: 100%; min-width: 1050px; border-collapse: collapse; }
-.userTableWrap th, .userTableWrap td { padding: 13px 16px; border-top: 1px solid #e8ebf0; text-align: left; white-space: nowrap; font-size: 11px; }
-.userTableWrap thead th { color: #707989; background: #f8f9fb; font-size: 9px; letter-spacing: .04em; }
+.userTableWrap th, .userTableWrap td { height: 56px; padding: 11px 16px; border-top: 1px solid #e8ebf0; text-align: left; white-space: nowrap; font-size: 13px; }
+.userTableWrap thead th { height: 38px; color: #707989; background: #f8f9fb; font-size: 11px; font-weight: 650; letter-spacing: .02em; }
 .userTableWrap tbody th { display: flex; align-items: center; gap: 10px; font-weight: 700; }
-.userTableWrap tbody th small { margin-top: 2px; display: block; color: #8a93a1; font-size: 9px; font-weight: 500; }
+.userTableWrap tbody th small { margin-top: 2px; display: block; color: #8a93a1; font-size: 11px; font-weight: 500; }
 .userTableWrap tbody tr:hover { background: #f7f9fc; }
-.userAvatar { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: #145fbd; background: #eaf4ff; font-size: 11px; font-weight: 800; }
-.userStatusComplete, .userStatusPending { padding: 4px 7px; border-radius: 5px; font-size: 9px; font-weight: 750; }
-.userStatusComplete { color: #176447; background: #edf8f3; }
-.userStatusPending { color: #765214; background: #fff8e8; }
+.userAvatar { width: 32px; height: 32px; border: 1px solid #e3e7ec; border-radius: 8px; display: grid; place-items: center; color: #657080; background: #f5f6f8; }
+.userAvatar svg { width: 17px; height: 17px; }
+.userStatus { display: inline-flex; align-items: center; gap: 8px; color: #3f4855; font-size: 12px; font-weight: 650; }
+.userStatus > span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.userStatusComplete { color: #14745a; }
+.userStatusProgress { color: #2c6bb2; }
+.userStatusInitial { color: #6f7886; }
 .emptyUsers { min-height: 180px; display: grid; place-items: center; color: var(--muted); font-size: 12px; }
 .usersCard { margin-top: 26px; padding: 22px; border: 1px solid #e1e5eb; border-radius: var(--radius-panel); background: #fff; }
 .userCount { color: #202735; font-size: 15px; }
@@ -227,11 +223,7 @@
 .pagination a { color: #176fd1; font-weight: 750; text-decoration: none; }
 .pagination span { color: #a8afb9; }
 
-.loadingAppHeader { max-width: 1480px; height: 64px; margin: 0 auto; padding: 0 32px; border-bottom: 1px solid #e6e9ee; display: flex; align-items: center; gap: 28px; }
 .skeletonBlock { border-radius: 6px; display: block; background: linear-gradient(100deg, #edf0f4 20%, #f7f8fa 38%, #edf0f4 56%); background-size: 260% 100%; animation: skeleton-shimmer 1.25s ease-in-out infinite; }
-.loadingBrand { width: 126px; height: 30px; }
-.loadingNav { width: 68px; height: 13px; }
-.loadingAction { width: 92px; height: 13px; margin-left: auto; }
 .loadingStatus { margin-bottom: 18px; display: flex; align-items: center; gap: 8px; color: #5f6d7f; font-size: 11px; font-weight: 700; }
 .loadingSpinner { width: 14px; height: 14px; color: #287fde; }
 .loadingPageHeader { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
@@ -273,9 +265,27 @@
 }
 
 @media (max-width: 680px) {
-  .appHeaderInner { height: 56px; padding: 0 18px; }
-  .productName, .brandDivider, .systemState, .primaryNav { display: none; }
-  .headerActions { margin-left: auto; }
+  .shell { display: block; }
+  .sidebar {
+    z-index: 20;
+    width: 100%;
+    height: 58px;
+    padding: 0 14px;
+    flex-direction: row;
+    align-items: center;
+    border-right: 0;
+    border-bottom: 1px solid #e3e7ec;
+  }
+  .brand { min-height: 40px; padding: 3px 4px; }
+  .brandMark { width: 30px; height: 30px; border-radius: 9px; }
+  .brandName { display: none; }
+  .sidebarNav { height: 100%; margin: 0 0 0 16px; display: flex; gap: 2px; }
+  .sidebarNav a { min-height: 100%; padding: 0 10px; border-radius: 0; font-size: 12px; }
+  .sidebarNav a[aria-current="page"] { background: transparent; box-shadow: inset 0 -2px #176fd1; }
+  .sidebarNav svg { display: none; }
+  .sidebarFooter { margin: 0 0 0 auto; padding: 0; border: 0; }
+  .sidebarFooter button { width: 36px; min-height: 36px; padding: 0; justify-content: center; }
+  .sidebarFooter button span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .main { padding: 28px 18px 48px; }
   .header { display: block; }
   .headerMeta { margin-top: 14px; }
@@ -292,8 +302,6 @@
   .tableWrap { margin-right: -18px; margin-left: -18px; }
   .chartWrap { overflow: hidden; }
   .chartWrap svg { min-width: 0; }
-  .loadingAppHeader { height: 56px; padding: 0 18px; }
-  .loadingNav { display: none; }
   .loadingPageHeader { align-items: flex-start; flex-direction: column; }
   .loadingFilter { height: 132px; }
   .loadingKpis { grid-template-columns: 1fr 1fr; }

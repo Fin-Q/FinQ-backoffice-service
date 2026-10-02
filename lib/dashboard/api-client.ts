@@ -58,7 +58,7 @@ function isBackofficeUser(value: unknown): value is BackofficeUser {
   return isRecord(value)
     && typeof value.id === "number"
     && typeof value.nickname === "string"
-    && typeof value.email === "string"
+    && (value.email === null || typeof value.email === "string")
     && typeof value.onboardingStatus === "string"
     && typeof value.totalXp === "number"
     && typeof value.currentStreak === "number"
